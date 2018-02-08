@@ -10,6 +10,3 @@ apt-get install -y libminiupnpc-dev libzmq3-dev
 # dependencies for compiling on Windows
 apt-get install -y g++-mingw-w64-i686 mingw-w64-i686-dev g++-mingw-w64-x86-64 mingw-w64-x86-64-dev
 apt-get install -y qtcreator qttools5-dev-tools
-git clone https://github.com/DrumpfCore/Drumpfcoin.git /root/drumpfcode
-cd /root/drumpfcode
-git checkout drumpf2
