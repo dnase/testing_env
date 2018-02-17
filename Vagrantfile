@@ -1,31 +1,57 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+access_key_id = "YOUR KEY"
+secret_access_key = "YOUR SECRET KEY"
+session_token = "SESSION TOKEN"
+keypair_name = "KEYPAIR NAME"
+private_key_path = "PATH TO YOUR PRIVATE KEY"
+
 Vagrant.configure("2") do |config|
-  config.vm.define "dockerdev" do |dockerdev|
 
-    #general config
-    dockerdev.vm.box = "xcoo/trusty64"
-    dockerdev.vm.hostname = "dockerdev.vm"
-    dockerdev.vm.provision :shell, inline: "/vagrant/files/bootstrap_docker.sh"
-
-    #virtualbox config
-    dockerdev.vm.provider "virtualbox" do |v|
+  # coin daemon server
+  config.vm.define "containerhost" do |vbox|
+    # general config
+    vbox.vm.box = "xcoo/trusty64"
+    vbox.vm.hostname = "containerhost.vm"
+    vbox.vm.provision :shell, inline: "/vagrant/files/scripts/bootstrap_docker.sh"
+    # virtualbox config
+    vbox.vm.provider "virtualbox" do |v|
       v.memory = 8192
       v.cpus = 4
     end
-
     # AWS config
     config.vm.provider :aws do |aws, override|
-      aws.access_key_id = "YOUR KEY"
-      aws.secret_access_key = "YOUR SECRET KEY"
-      aws.session_token = "SESSION TOKEN"
-      aws.keypair_name = "KEYPAIR NAME"
-
+      aws.access_key_id = access_key_id
+      aws.secret_access_key = secret_access_key
+      aws.session_token = session_token
+      aws.keypair_name = keypair_name
       aws.ami = "ami-99aa41e3"
-
       override.ssh.username = "ubuntu"
-      override.ssh.private_key_path = "PATH TO YOUR PRIVATE KEY"
+      override.ssh.private_key_path = private_key_path
     end
   end
+  # database server
+  config.vm.define "databasehost" do |vbox|
+    # general config
+    vbox.vm.box = "xcoo/trusty64"
+    vbox.vm.hostname = "databasehost.vm"
+    vbox.vm.provision :shell, inline: "/vagrant/files/scripts/bootstrap_database.sh"
+    # virtualbox config
+    vbox.vm.provider "virtualbox" do |v|
+      v.memory = 8192
+      v.cpus = 4
+    end
+    # AWS config
+    config.vm.provider :aws do |aws, override|
+      aws.access_key_id = access_key_id
+      aws.secret_access_key = secret_access_key
+      aws.session_token = session_token
+      aws.keypair_name = keypair_name
+      aws.ami = "ami-99aa41e3"
+      override.ssh.username = "ubuntu"
+      override.ssh.private_key_path = private_key_path
+    end
+  end
+
 end
