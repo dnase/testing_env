@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
 
     #general config
     dockerdev.vm.box = "xcoo/trusty64"
-    dockerdev.vm.hostname = "master.vm"
+    dockerdev.vm.hostname = "dockerdev.vm"
     dockerdev.vm.provision :shell, inline: "/vagrant/files/bootstrap_docker.sh"
 
     #virtualbox config
