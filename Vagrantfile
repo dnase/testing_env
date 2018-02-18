@@ -10,7 +10,6 @@ Vagrant.configure("2") do |config|
     # general config
     vbox.vm.box = "xcoo/xenial64"
     vbox.vm.hostname = "containerhost.vm"
-    vbox.vm.provision :shell, inline: "/vagrant/files/scripts/bootstrap_docker.sh"
     # virtualbox config
     vbox.vm.provider "virtualbox" do |v|
       v.memory = 8192
@@ -26,5 +25,7 @@ Vagrant.configure("2") do |config|
       override.ssh.username = "ubuntu"
       override.ssh.private_key_path = configuration['aws_credentials']['keypath']
     end
+    vbox.vm.provision :shell, inline: "chmod +x /vagrant/files/scripts/bootstrap_docker.sh"
+    vbox.vm.provision :shell, inline: "/vagrant/files/scripts/bootstrap_docker.sh"
   end
 end
