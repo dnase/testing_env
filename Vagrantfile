@@ -31,6 +31,7 @@ Vagrant.configure("2") do |config|
       override.ssh.private_key_path = private_key_path
     end
   end
+=begin
   # database server
   config.vm.define "databasehost" do |vbox|
     # general config
@@ -53,5 +54,5 @@ Vagrant.configure("2") do |config|
       override.ssh.private_key_path = private_key_path
     end
   end
-
+=end
 end
