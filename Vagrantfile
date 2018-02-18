@@ -1,11 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+require 'json'
 
-access_key_id = "YOUR KEY"
-secret_access_key = "YOUR SECRET KEY"
-session_token = "SESSION TOKEN"
-keypair_name = "KEYPAIR NAME"
-private_key_path = "PATH TO YOUR PRIVATE KEY"
+configuration = JSON.parse(File.read('files/data/config.json'))
 
 Vagrant.configure("2") do |config|
   # coin daemon server
@@ -20,14 +17,14 @@ Vagrant.configure("2") do |config|
       v.cpus = 4
     end
     # AWS config
-    config.vm.provider :aws do |aws, override|
-      aws.access_key_id = access_key_id
-      aws.secret_access_key = secret_access_key
-      aws.session_token = session_token
-      aws.keypair_name = keypair_name
-      aws.ami = "ami-99aa41e3"
+    vbox.vm.provider :aws do |aws, override|
+      aws.access_key_id = configuration['aws_credentials']['access_key_id']
+      aws.secret_access_key = configuration['aws_credentials']['secret_access_key']
+      aws.keypair_name = configuration['aws_credentials']['keypair_name']
+      aws.region = "us-east-1"
+      aws.region_config "us-east-1", :ami => "ami-b3425cc9"
       override.ssh.username = "ubuntu"
-      override.ssh.private_key_path = private_key_path
+      override.ssh.private_key_path = configuration['aws_credentials']['keypath']
     end
   end
 end
