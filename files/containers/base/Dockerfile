@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:xenial
 
 RUN ["/bin/bash", "-c", "apt-get update"]
 RUN ["/bin/bash", "-c", "apt-get install -y libzmq3-dev libminiupnpc-dev libssl-dev libevent-dev libgmp-dev git"]
