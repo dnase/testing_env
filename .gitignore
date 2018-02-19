@@ -3,3 +3,4 @@ creds.txt
 files/containers
 files/data/config.json
 files/data/drumpfnode.pem
+files/data/pe.conf

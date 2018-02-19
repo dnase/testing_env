@@ -12,6 +12,8 @@ private_ip_data = {}
 configuration = JSON.parse(File.read('files/data/config.json'))
 
 Vagrant.configure("2") do |config|
+  #bastion host
+
   # puppet master
   config.vm.define "puppetmaster" do |vbox|
     # general config
