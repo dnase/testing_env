@@ -6,8 +6,6 @@ require 'json'
 webservers = 1
 # puppet master IP to hardcode into /etc/hosts
 puppetserver_internal_ip = '172.31.32.66'
-# IP address data
-private_ip_data = {}
 
 configuration = JSON.parse(File.read('files/data/config.json'))
 
@@ -37,7 +35,7 @@ Vagrant.configure("2") do |config|
       override.ssh.private_key_path = configuration['aws_credentials']['keypath']
     end
     vbox.vm.provision :shell, inline: "chmod +x /vagrant/files/scripts/*.sh"
-    #vbox.vm.provision :shell, inline: "PUPPETMASTER_IP=#{puppetserver_internal_ip} /vagrant/files/scripts/bootstrap_puppet.sh"
+    vbox.vm.provision :shell, inline: "/vagrant/files/scripts/bootstrap_puppet_master.sh"
   end
 
   # coin daemon server
@@ -63,7 +61,7 @@ Vagrant.configure("2") do |config|
     end
     vbox.vm.provision :shell, inline: "chmod +x /vagrant/files/scripts/*.sh"
     vbox.vm.provision :shell, inline: "/vagrant/files/scripts/bootstrap_docker.sh"
-    vbox.vm.provision :shell, inline: "PUPPETMASTER_IP=#{puppetserver_internal_ip} /vagrant/files/scripts/bootstrap_puppet.sh"
+    vbox.vm.provision :shell, inline: "PUPPETMASTER_IP=#{puppetserver_internal_ip} /vagrant/files/scripts/bootstrap_puppet_agent.sh"
   end
 
   # web servers
@@ -91,8 +89,7 @@ Vagrant.configure("2") do |config|
       end
       vbox.vm.provision :shell, inline: "chmod +x /vagrant/files/scripts/*.sh"
       vbox.vm.provision :shell, inline: "/vagrant/files/scripts/bootstrap_webapp.sh"
-      vbox.vm.provision :shell, inline: "PUPPETMASTER_IP=#{puppetserver_internal_ip} /vagrant/files/scripts/bootstrap_puppet.sh"
+      vbox.vm.provision :shell, inline: "PUPPETMASTER_IP=#{puppetserver_internal_ip} /vagrant/files/scripts/bootstrap_puppet_agent.sh"
     end
   }
-  puts private_ip_data.to_s
 end
